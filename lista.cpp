@@ -66,7 +66,7 @@ int main() {
 
   nod* cap = NULL;
 
-  // afisare articole din liste
+  // citire articole in lista
   cap = citesteArticole(cap, f_name, items);
 
   // lista dubla inlantuita, parcurgere si afisare in ambele sensuri
