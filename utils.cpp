@@ -3,7 +3,9 @@
 #include <cstring>
 
 /** ToDo:
-    structuri avansate - arbori, stack, queue, sortari etc...
+    structuri lineare: stack, queue
+    structuri
+    implementat cautari
     implementat functii stergere
 **/
 

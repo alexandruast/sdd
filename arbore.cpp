@@ -1,6 +1,7 @@
 #include "utils.cpp"
+#include <math.h>
 
-int recursions;
+int inaltime;
 
 struct nod {
   Articol info;
@@ -27,7 +28,7 @@ nod* adaugaArticol(nod* root, Articol articol){
 }
 
 Articol * cautaArticol(nod* root, int value) {
-  recursions++;
+  inaltime++;
   if (!root) return 0;
   if (value == root->info.id) return &root->info;
   if (value <= root->info.id) return cautaArticol(root->st, value);
@@ -48,6 +49,31 @@ nod* citesteArticole(nod* root, char* f_name, int items) {
   return root;
 }
 
+int countNodes(nod* root, bool left=true) {
+  int count = 0;
+  if(root && left) {
+    if (root->st) count ++;
+    count += countNodes(root->st) + countNodes(root->dr);
+  }
+  if(root && !left) {
+    if (root->dr) count ++;
+    count += countNodes(root->dr, false) + countNodes(root->st, false);
+  }
+  return count;
+}
+
+void breadthFirst(nod* root, int* arbore, int index=0) {
+  if(root) {
+    arbore[index]=root->info.id;
+    if(root->st) {
+      breadthFirst(root->st, arbore, 2 * index + 1);
+    }
+    if(root->dr) {
+      breadthFirst(root->dr, arbore, 2 * index + 2);
+    }
+  }
+}
+
 int main() {
   // arbore articole
   char f_name[] = "data-structures.in";
@@ -59,15 +85,26 @@ int main() {
   // citire articole din arbore
   printf("Citire valori in arbore:\n");
   root = citesteArticole(root, f_name, items);
+
+  int left = countNodes(root,true);
+  int right = countNodes(root,false);
+  int depth = (left > right) ? left : right;
+  int elemente = pow(2,depth);
+  int* arbore = (int*)malloc(sizeof(int)*elemente);
+  for (int i=0; i<elemente; i++) {
+      arbore[i] = 0;
+  }
+
+  // cautare articol in arbore
   while (true) {
     printf("Introduceti id-ul de cautat:");
     int id = NULL;
-    recursions = 0;
+    inaltime = 0;
     scanf("%d",&id);
     // iesire daca id = 0
     if (id == 0) break;
     Articol * p_articol = cautaArticol(root, id);
-    printf("Parcurgeri recursive:%d\n",recursions);
+    printf("Inaltime nod cautat:%d\n",inaltime);
     Articol articol;
     if (p_articol) {
       articol = * p_articol;
@@ -76,7 +113,23 @@ int main() {
       printf("Nodul nu a fost gasit!");
     }
   }
-  // ToDo: desenare arbore ? :)
+
+  // conversie in vector breadth first pentru afisare
+  printf("Afisare structura arbore:\n");
+  char spacer[]=" ";
+  breadthFirst(root, arbore);
+  for (int i=0; i<depth;i++) {
+    for (int k=1;k<pow(2,depth-i)/2;k++) printf("%s",spacer);
+    for (int j=pow(2,i)-1; j<pow(2,i+1)-1; j++) {
+      if (arbore[j] != 0) {
+        printf("%d",arbore[j]);
+      } else {
+        printf("%s",spacer);
+      }
+      for (int k=1;k<pow(2,depth-i);k++) printf("%s",spacer);
+    }
+    printf("\n");
+  }
 
   printf("Sfarsit demonstratie.\n");
   return 0;
