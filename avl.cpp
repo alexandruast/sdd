@@ -2,6 +2,24 @@
 
 int inaltime;
 
+int factorEchilibru(nod* root) {
+  return (inaltimeArbore(root->st) - inaltimeArbore(root->dr));
+}
+
+nod* rotatieStanga(nod* root) {
+  nod* pivot = root->dr;
+  root->dr = pivot->st;
+  pivot->st = root;
+  return pivot;
+}
+
+nod* rotatieDreapta(nod* root) {
+  nod* pivot = root->st;
+  root->st = pivot->dr;
+  pivot->dr = root;
+  return pivot;
+}
+
 nod* adaugaArticol(nod* root, Articol articol){
   nod* temp = (nod*)malloc(sizeof(nod));
   temp->info = deepCopy(articol);
@@ -11,12 +29,31 @@ nod* adaugaArticol(nod* root, Articol articol){
     temp->dr = NULL;
     return temp;
   }
+
   if (articol.id <= root->info.id) {
     root->st = adaugaArticol(root->st, articol);
   }
+
   if (articol.id > root->info.id) {
     root->dr = adaugaArticol(root->dr, articol);
   }
+
+  if (factorEchilibru(root) == 2) {
+    if (factorEchilibru(root->st) == -1) {
+      root = rotatieStanga(root->st);
+    } else {
+      root = rotatieDreapta(root);
+    }
+  }
+
+  if (factorEchilibru(root) == -2) {
+    if (factorEchilibru(root->dr) == 1) {
+      root = rotatieDreapta(root->dr);
+    } else {
+      root = rotatieStanga(root);
+    }
+  }
+
   return root;
 }
 
@@ -72,7 +109,7 @@ int main() {
     }
   }
 
-  // afisare arbore
+  // afisare avl
   afisareArbore(root);
 
   printf("Sfarsit demonstratie.\n");
