@@ -57,15 +57,6 @@ nod* adaugaArticol(nod* root, Articol articol){
   return root;
 }
 
-Articol * cautaArticol(nod* root, int value) {
-  inaltime++;
-  if (!root) return 0;
-  if (value == root->info.id) return &root->info;
-  if (value <= root->info.id) return cautaArticol(root->st, value);
-  if (value > root->info.id) return cautaArticol(root->dr, value);
-  return NULL;
-}
-
 nod* citesteArticole(nod* root, char* f_name, int items) {
   // citire din fisier
   FILE* f = fopen(f_name,"r");
@@ -90,27 +81,12 @@ int main() {
   printf("Citire valori in arbore:\n");
   root = citesteArticole(root, f_name, items);
 
-  // cautare articol in arbore
-  while (true) {
-    printf("Introduceti id-ul de cautat:");
-    int id = NULL;
-    inaltime = 0;
-    scanf("%d",&id);
-    // iesire daca id = 0
-    if (id == 0) break;
-    Articol * p_articol = cautaArticol(root, id);
-    printf("Inaltime nod cautat:%d\n",inaltime);
-    Articol articol;
-    if (p_articol) {
-      articol = * p_articol;
-      afiseazaArticol(articol);
-    } else {
-      printf("Nodul nu a fost gasit!");
-    }
-  }
-
   // afisare avl
+  printf("Afisare structura arbore AVL:\n");
   afisareArbore(root);
+
+  // cleanup
+  freeTree(root);
 
   printf("Sfarsit demonstratie.\n");
   return 0;

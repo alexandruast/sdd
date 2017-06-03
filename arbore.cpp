@@ -73,7 +73,11 @@ int main() {
   }
 
   // afisare arbore
+  printf("Afisare structura arbore:\n");
   afisareArbore(root);
+
+  // cleanup
+  freeTree(root);
 
   printf("Sfarsit demonstratie.\n");
   return 0;

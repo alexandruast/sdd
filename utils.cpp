@@ -3,11 +3,11 @@
 #include <cstring>
 #include <math.h>
 
-/** ToDo:
-    structuri lineare: stack, queue
-    structuri
-    implementat cautari
-    implementat functii stergere
+/** ToDo
+    MaxHeap, MinHeap
+    tabele de dispersie
+    algoritmi sortare
+    algoritmi stergere
 **/
 
 struct Articol {
@@ -41,10 +41,13 @@ int fileRecords(char* f_name);
 int inaltimeArbore(nod* root);
 
 // afisare arbore grafic
-void afisareArbore(nod* root);
+void afisareArbore(nod* root, Articol* heap, int heapSize);
 
 // arbore stocat intr-o matrice breadthFirst
 void breadthFirst(nod* root, int* arbore, int index);
+
+// dezalocare spatiu ocupat arbore
+void freeTree(nod* root);
 
 Articol deepCopy(Articol articol) {
   Articol temp;
@@ -109,15 +112,43 @@ void breadthFirst(nod* root, int* arbore, int index=0) {
   }
 }
 
-void afisareArbore(nod* root) {
-  int inaltime = inaltimeArbore(root);
-  int elemente = pow(2,inaltime);
+void afisareArbore(nod* root = NULL, Articol* heap = NULL, int heapSize = NULL) {
+
+  if (!heap && !root) {
+    printf("Nicio structura de afisat!\n");
+    return;
+  }
+
+  int inaltime = 0;
+  int elemente = 0;
+
+  if (root && !heap) {
+    inaltime = inaltimeArbore(root);
+    elemente = pow(2,inaltime);
+  }
+
+  if (heap && !root) {
+    elemente = heapSize;
+    inaltime = (log2(elemente));
+  }
+
+
   int* arbore = (int*)malloc(sizeof(int)*elemente);
   for (int i=0; i<elemente; i++) {
       arbore[i] = 0;
   }
-  breadthFirst(root, arbore);
-  printf("Afisare structura arbore:\n");
+
+  if (root && !heap) {
+    breadthFirst(root, arbore);
+  }
+
+  if (heap && !root) {
+    for (int i=0; i<elemente; i++) {
+      arbore[i] = heap[i].id;
+    }
+  }
+
+  // afisare structura arbore
   char spacer[]=" ";
   for (int i=0; i<inaltime;i++) {
     for (int k=1;k<pow(2,inaltime-i)/2;k++) printf("%s",spacer);
@@ -130,5 +161,20 @@ void afisareArbore(nod* root) {
       for (int k=1;k<pow(2,inaltime-i);k++) printf("%s",spacer);
     }
     printf("\n");
+  }
+  free(arbore);
+}
+
+void freeTree(nod* root) {
+  if (root) {
+    if (root->st) {
+      freeTree (root->st);
+    }
+    if (root->dr) {
+    freeTree (root->dr);
+    }
+    free(root->info.nume);
+    root->info.id = NULL;
+    root->info.marime = NULL;
   }
 }
