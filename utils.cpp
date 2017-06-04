@@ -59,7 +59,7 @@ Articol deepCopy(Articol articol) {
 }
 
 void afiseazaArticol(Articol articol) {
-  printf("%d\t%s\t%0.2f\n", articol.id, articol.nume, articol.marime);
+  printf("%03d %s %05.2f\n", articol.id, articol.nume, articol.marime);
 }
 
 Articol newArticol(int id, char* nume, float marime) {

@@ -68,7 +68,7 @@ int main() {
       articol = * p_articol;
       afiseazaArticol(articol);
     } else {
-      printf("Nodul nu a fost gasit!");
+      printf("Nodul nu a fost gasit!\n");
     }
   }
 

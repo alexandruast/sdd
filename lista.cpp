@@ -1,14 +1,14 @@
 #include "utils.cpp"
 
-struct nod {
+struct nodLista {
   Articol info;
-  nod* next;
-  nod* prev;
+  nodLista* next;
+  nodLista* prev;
 };
 
 // adaugare articol in lista
-nod* adaugaArticol(nod* cap, int pos, Articol articol) {
-  nod* temp = (nod*)malloc(sizeof(nod));
+nodLista* adaugaArticol(nodLista* cap, int pos, Articol articol) {
+  nodLista* temp = (nodLista*)malloc(sizeof(nodLista));
   temp->info = deepCopy(articol);
   // nu avem cap
   if (!cap) {
@@ -24,7 +24,7 @@ nod* adaugaArticol(nod* cap, int pos, Articol articol) {
     return temp;
   }
   // mergem prin lista pana cand ajungem la capat sau la pozitie
-  nod* curent = cap;
+  nodLista* curent = cap;
   int i = 0;
   while (curent->next != NULL && pos != i) {
     curent=curent->next; i++;
@@ -44,7 +44,7 @@ nod* adaugaArticol(nod* cap, int pos, Articol articol) {
   return cap;
 }
 
-nod* citesteArticole(nod* cap, char* f_name, int items) {
+nodLista* citesteArticole(nodLista* cap, char* f_name, int items) {
   // citire din fisier
   FILE* f = fopen(f_name,"r");
   Articol articol;
@@ -64,13 +64,13 @@ int main() {
   // citire numar de linii din fisier
   int items = fileRecords(f_name);
 
-  nod* cap = NULL;
+  nodLista* cap = NULL;
 
   // citire articole in lista
   cap = citesteArticole(cap, f_name, items);
 
   // lista dubla inlantuita, parcurgere si afisare in ambele sensuri
-  nod* curent = cap;
+  nodLista* curent = cap;
 
   printf("Lista dublu inlantuita, parcurgere pe next:\n");
   do {
