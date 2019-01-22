@@ -112,7 +112,7 @@ void breadthFirst(nod* root, int* arbore, int index=0) {
   }
 }
 
-void afisareArbore(nod* root = NULL, Articol* heap = NULL, int heapSize = NULL) {
+void afisareArbore(nod* root = NULL, Articol* heap = NULL, int heapSize = 0) {
 
   if (!heap && !root) {
     printf("Nicio structura de afisat!\n");
@@ -174,7 +174,7 @@ void freeTree(nod* root) {
     freeTree (root->dr);
     }
     free(root->info.nume);
-    root->info.id = NULL;
-    root->info.marime = NULL;
+    root->info.id = 0;
+    root->info.marime = 0;
   }
 }
