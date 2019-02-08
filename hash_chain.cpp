@@ -76,7 +76,7 @@ int main() {
   // cautare hash nodListaing
   while(true) {
     printf("Introduceti id-ul si marimea de cautat (2 4.83) :");
-    int id = NULL;
+    int id = 0;
     float marime = NULL;
     scanf("%d %f", &id, &marime);
     // iesire daca id = 0

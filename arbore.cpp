@@ -56,7 +56,7 @@ int main() {
   // cautare articol in arbore
   while (true) {
     printf("Introduceti id-ul de cautat:");
-    int id = NULL;
+    int id = 0;
     inaltime = 0;
     scanf("%d",&id);
     // iesire daca id = 0
